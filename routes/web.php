@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () { return view('welcome'); })->name('home');
+Route::get('/', function () { return view('frontend.index'); })->name('home');
 Route::get('forbidden', function () { return view('error.forbidden'); })->name('forbidden');
 Route::get('/dashboard', function () {  $user = auth()->user();
-    return view($user->user_type === 1 ? 'admin.index' : ($user->user_type === 2 ? 'user.index' : 'welcome')); })->middleware(['auth', 'verified'])->name('dashboard');
+    return view($user->user_type === 1 ? 'admin.index' : ($user->user_type === 2 ? 'frontend.index' : 'welcome')); })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], function () {
     Route::resource('blank-page', \App\Http\Controllers\BasicController::class);
@@ -25,7 +25,10 @@ Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], funct
     Route::resource('setting', \App\Http\Controllers\SettingController::class);
 });
 
-Route::group(['middleware' => ['auth', 'check_user:2'], 'as' => 'user.'], function () {  
+Route::group(['middleware' => ['auth', 'check_user:2'], 'prefix'=>'user', 'as' => 'user.'], function () {  
+    
+    Route::resource('profile', \App\Http\Controllers\frontend\ProfileController::class);
+
 
 });
     

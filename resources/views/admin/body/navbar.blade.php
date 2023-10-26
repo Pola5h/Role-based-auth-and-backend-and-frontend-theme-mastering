@@ -56,7 +56,7 @@ $userData = Auth::user();
                         @csrf
                     </form>
 
-                    <a href="./sign-in.html" class="dropdown-item"
+                    <a href="#" class="dropdown-item"
                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                         Logout</a>
 
