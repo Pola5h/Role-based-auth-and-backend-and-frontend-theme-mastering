@@ -78,26 +78,26 @@
   </div>
 </div>
 <script>
-  const fileInput = document.querySelector('input[type="file"]');
-const imgPreview = document.querySelector('.row img');
+              const fileInput = document.querySelector('input[type="file"]');
+            const imgPreview = document.querySelector('.row img');
 
-// Get the existing image source, if any.
-const existingImageSrc = imgPreview.getAttribute('src');
+            // Get the existing image source, if any.
+            const existingImageSrc = imgPreview.getAttribute('src');
 
-// Listen for the change event on the file input field.
-fileInput.addEventListener('change', function() {
-  // If the user has selected an image, preview it.
-  if (fileInput.files.length > 0) {
-    const fileReader = new FileReader();
-    fileReader.onload = function() {
-      imgPreview.src = fileReader.result;
-    };
-    fileReader.readAsDataURL(fileInput.files[0]);
-  } else {
-    // If the user has not selected an image, show the existing image, if any.
-    imgPreview.src = existingImageSrc;
-  }
-});
+            // Listen for the change event on the file input field.
+            fileInput.addEventListener('change', function() {
+              // If the user has selected an image, preview it.
+              if (fileInput.files.length > 0) {
+                const fileReader = new FileReader();
+                fileReader.onload = function() {
+                  imgPreview.src = fileReader.result;
+                };
+                fileReader.readAsDataURL(fileInput.files[0]);
+              } else {
+                // If the user has not selected an image, show the existing image, if any.
+                imgPreview.src = existingImageSrc;
+              }
+            });
 
 </script>
 
