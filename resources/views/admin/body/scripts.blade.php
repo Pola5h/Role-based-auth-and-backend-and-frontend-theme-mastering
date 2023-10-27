@@ -10,11 +10,16 @@
 <script src="{{ URL::asset('../backend/assets/dist/libs/nouislider/dist/nouislider.min.js?1684106062') }}" defer>
 </script>
 <script src="{{ URL::asset('../backend/assets/dist/libs/litepicker/dist/litepicker.js?1684106062') }}" defer></script>
-<script src="{{ URL::asset('../backend/assets/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062') }}"defer></script>
+<script src="{{ URL::asset('../backend/assets/dist/libs/tom-select/dist/js/tom-select.base.min.js?1684106062') }}"
+	defer></script>
 
 <!-- Tabler Core -->
 <script src="{{ URL::asset('../backend/assets/dist/js/tabler.min.js?1684106062')}}" defer></script>
 <script src="{{ URL::asset('../backend/assets/dist/js/demo.min.js?1684106062')}}" defer></script>
+
+
+
+{{-- theme script --}}
 
 <script>
 	// @formatter:off

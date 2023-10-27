@@ -15,6 +15,8 @@
 <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
 
 
+
+
 <style>
 	@import url('https://rsms.me/inter/inter.css');
 
@@ -25,8 +27,8 @@
 	body {
 		font-feature-settings: "cv03", "cv04", "cv11";
 	}
-	.ck-editor_editable_inline {
-		height: 450px;
+	.ck-editor__editable{
+		height: 250px;
 	}
 	
 </style>

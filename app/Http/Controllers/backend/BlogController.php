@@ -32,7 +32,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-
+// dd($request->all());
         // dd( $request->all());
         $data = new Blog();
 
@@ -51,8 +51,7 @@ class BlogController extends Controller
         $data->slug = Str::slug($request->input('title')); // Generate a slug based on the title
         $data->save(); // Save the basic data first to get the blog ID
 
-      
-
+        toastr()->success('Data updated successfully');
         return redirect()->back();
     }
 

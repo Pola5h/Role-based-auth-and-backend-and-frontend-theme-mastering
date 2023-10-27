@@ -55,7 +55,7 @@
 
                                         <div class="mb-3">
                                             <label class="form-label">Content
-                                                <textarea class="form-control" id="editor" name="content"
+                                                <textarea class="form-control" name="content" id="editor" name="example-textarea-input"
                                                     rows="100" placeholder="Content.."></textarea>
 
                                         </div>
@@ -65,11 +65,9 @@
                                             <div class="form-label">
                                                 Category
                                             </div>
-                                            <select name="category[]"  class="form-select" id="select-states" 
-                                                multiple>
-@
+                                            <select name="category"  class="form-select" id="select-states" >
                                                 <option value="" disabled selected> Select Category</option>
-                                                @foreach(App\Models\Category::get() as $category)
+                                                @foreach(\App\Models\Category::get() as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                             
