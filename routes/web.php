@@ -25,6 +25,7 @@ Route::get('/dashboard', function () {
     return view($user->user_type === 1 ? 'admin.index' : ($user->user_type === 2 ? 'frontend.index' : 'welcome'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], function () {
     Route::resource('blank-page', \App\Http\Controllers\BasicController::class);
     Route::resource('profile', \App\Http\Controllers\ProfileController::class);

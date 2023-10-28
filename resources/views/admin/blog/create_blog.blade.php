@@ -35,7 +35,7 @@
                                         <div class="mb-3">
                                             <div class="col-auto mb-3">
                                                 <img src="{{ isset($image) ? URL::asset('../backend/assets/uploads/' . $image) : URL::asset('../backend/assets/static/logo.svg') }}"
-                                                    width="100" class="img-thumbnail" />
+                                                    width="200" class="img-thumbnail" />
                                             </div>
 
 
@@ -45,6 +45,18 @@
                                                 <input type="file" class="form-control" name="image" />
                                             </div>
                                         </div>
+                                        <div class="mb-3">
+                                            <div class="col-auto mb-3">
+                                                <img src="{{ isset($banner) ? URL::asset('../backend/assets/uploads/' . $banner) : URL::asset('../backend/assets/static/logo.svg') }}"
+                                                    width="300" class="img-thumbnail banner-img" />
+                                            </div>
+                                        
+                                            <div class="col-auto mb-3">
+                                                <label class="form-label required">Banner Image</label>
+                                                <input type="file" class="form-control" name="banner" />
+                                            </div>
+                                        </div>
+                                        
 
 
                                         <div class="mb-3">
@@ -124,6 +136,33 @@
         }
     });
 </script>
+{{-- for banner --}}
+
+<script>
+    const bannerFileInput = document.querySelector('input[name="banner"]');
+    const bannerImgPreview = document.querySelector('.col-auto .banner-img');
+
+    // Get the existing banner image source, if any.
+    const existingBannerSrc = bannerImgPreview.getAttribute('src');
+
+    // Listen for the change event on the banner file input field.
+    bannerFileInput.addEventListener('change', function() {
+        // If the user has selected a banner image, preview it.
+        if (bannerFileInput.files.length > 0) {
+            const fileReader = new FileReader();
+            fileReader.onload = function() {
+                bannerImgPreview.src = fileReader.result;
+            };
+            fileReader.readAsDataURL(bannerFileInput.files[0]);
+        } else {
+            // If the user has not selected a banner image, show the existing banner image or the default image.
+            bannerImgPreview.src = existingBannerSrc || '{{ URL::asset('../backend/assets/static/default-banner.jpg') }}';
+        }
+    });
+</script>
+
+
+
 
 {{-- ckeditor 5 --}}
 <script>

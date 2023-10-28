@@ -16,11 +16,15 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('thumbnail');
+            $table->string('banner');
+
             $table->text('content');
             $table->unsignedBigInteger('author_id');
             $table->foreign('author_id')->references('id')->on('users');
             $table->dateTime('last_modified')->nullable();
             $table->unsignedBigInteger('category_id');
+            $table->integer('visits_count')->default(0);
+
             // Add a foreign key constraint to link to the 'categories' table if applicable.
             // $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();

@@ -28,15 +28,15 @@
                             </span>
                         </div>
                         <div class="post-featured-image mt-5">
-                            <img src="{{ asset('media/' . $blogData->thumbnail) }}" class="img-fluid w-100"
+                            <img src="{{ asset('media/' . $blogData->banner) }}" class="img-fluid w-100"
                                 alt="featured-image">
                         </div>
                     </div>
                     <div class="post-body">
                         <div class="entry-content">
-                          
-                        {!! $blogData->content !!}
-                        
+
+                            {!! $blogData->content !!}
+
                         </div>
 
                         <div class="post-tags py-4">
@@ -65,6 +65,65 @@
                         </div>
                     </div>
                 </div>
+                <div class="post-author d-flex my-5">
+                    <div class="author-img">
+                        <img alt="" src="images/author.jpg" class="avatar avatar-100 photo" width="100" height="100">
+                    </div>
+
+                    <div class="author-content pl-4">
+                        <h4 class="mb-3"><a href="#" title="" rel="author" class="text-capitalize">Themefisher</a>
+                        </h4>
+                        <p>Hey there. My name is Liam. I was born with the love for traveling. I also love taking
+                            photos with my phone in order to capture moment..</p>
+
+                        <a target="_blank" class="author-social" href="#"><i class="ti-facebook"></i></a>
+                        <a target="_blank" class="author-social" href="#"><i class="ti-twitter"></i></a>
+                        <a target="_blank" class="author-social" href="#"><i class="ti-google-plus"></i></a>
+                        <a target="_blank" class="author-social" href="#"><i class="ti-instagram"></i></a>
+                        <a target="_blank" class="author-social" href="#"><i class="ti-pinterest"></i></a>
+                        <a target="_blank" class="author-social" href="#"><i class="ti-tumblr"></i></a>
+                    </div>
+                </div>
+                <nav class="post-pagination clearfix border-top border-bottom py-4">
+                    <div class="prev-post">
+                        @if ($previousPost)
+                        <a href="{{ route('user.blog.show', $previousPost->slug) }}">
+                            <span class="text-uppercase font-sm letter-spacing">Previous</span>
+                            <h4 class="mt-3">{{ $previousPost->title }}</h4>
+                        </a>
+                        @endif
+                    </div>
+                    <div class="next-post">
+                        @if ($nextPost)
+                        <a href="{{ route('user.blog.show', $nextPost->slug) }}">
+                            <span class="text-uppercase font-sm letter-spacing">Next</span>
+                            <h4 class="mt-3">{{ $nextPost->title }}</h4>
+                        </a>
+                        @endif
+                    </div>
+                </nav>
+
+                <div class="related-posts-block mt-5">
+                    <h3 class="news-title mb-4 text-center">You May Also Like</h3>
+                    <div class="row">
+                        @foreach ($relatedPosts as $relatedPost)
+                        <div class="col-lg-4 col-md-4 col-sm-6">
+                            <div class="post-block-wrapper mb-4 mb-lg-0">
+                                <a href="{{ route('user.blog.show', $relatedPost->slug) }}">
+                                    <img class="img-fluid" src="  {{ asset('media/' . $relatedPost->thumbnail) }}"
+                                        alt="post-thumbnail" />
+                                </a>
+                                <div class="post-content mt-3">
+                                    <h5>
+                                        <a href="{{ route('user.blog.show', $relatedPost->slug) }}">{{
+                                            $relatedPost->title }}</a>
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
 
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -82,6 +141,8 @@
                         <div class="sidebar-widget follow mb-5 text-center">
                             <h4 class="text-center widget-title">Follow Me</h4>
                             <div class="follow-socials">
+
+
                                 <a href="#"><i class="ti-facebook"></i></a>
                                 <a href="#"><i class="ti-twitter"></i></a>
                                 <a href="#"><i class="ti-instagram"></i></a>
@@ -90,65 +151,101 @@
                             </div>
                         </div>
 
-                        <div class="sidebar-widget mb-5 ">
+                        <div class="sidebar-widget mb-5">
                             <h4 class="text-center widget-title">Trending Posts</h4>
-                    
+
+                            <!-- Loop through the related posts -->
+                            @php
+                            $count = 0;
+                            @endphp
+
+                            @foreach($trendingPosts as $post)
+                            @if($count == 0)
                             <div class="sidebar-post-item-big">
-                                <a href="blog-single.html"><img src="images/news/img-1.jpg" alt="" class="img-fluid"></a>
+                                <a href="{{ route('user.blog.show', ['blog' => $post->slug]) }}"><img
+                                        src="{{ asset('media/' . $post->thumbnail) }}" alt="" class="img-fluid"></a>
                                 <div class="mt-3 media-body">
-                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-                                    <h4 ><a href="blog-single.html">Meeting With Clarissa, Founder Of Purple Conversation App</a></h4>
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">{{
+                                        $post->created_at->format('F j, Y') }}</span>
+                                    <h4><a href="{{ route('user.blog.show', ['blog' => $post->slug]) }}">{{ $post->title
+                                            }}</a></h4>
                                 </div>
                             </div>
-                    
+                            @elseif($count == 1)
                             <div class="media border-bottom py-3 sidebar-post-item">
-                                <a href="#"><img class="mr-4" src="images/news/thumb-1.jpg" alt=""></a>
+                                <a href="{{ route('user.blog.show', ['blog' => $post->slug]) }}"><img
+                                        src="{{ asset('media/' . $post->thumbnail) }}" alt="" class="mr-4"></a>
                                 <div class="media-body">
-                                    <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-                                    <h4 ><a href="blog-single.html">Thoughtful living in los Angeles</a></h4>
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">{{
+                                        $post->created_at->format('F j, Y') }}</span>
+                                    <h4><a href="{{ route('user.blog.show', ['blog' => $post->slug]) }}">{{ $post->title
+                                            }}</a></h4>
                                 </div>
                             </div>
-                    
+                            @else
                             <div class="media py-3 sidebar-post-item">
-                                <a href="#"><img class="mr-4" src="images/news/thumb-2.jpg" alt=""></a>
-                               <div class="media-body">
-                                       <span class="text-muted letter-spacing text-uppercase font-sm">September 10, 2019</span>
-                                    <h4 ><a href="blog-single.html">Vivamus molestie gravida turpis.</a></h4>
+                                <a href="{{ route('user.blog.show', ['blog' => $post->slug]) }}"><img
+                                        src="{{ asset('media/' . $post->thumbnail) }}" alt="" class="mr-4"></a>
+                                <div class="media-body">
+                                    <span class="text-muted letter-spacing text-uppercase font-sm">{{
+                                        $post->created_at->format('F j, Y') }}</span>
+                                    <h4><a href="{{ route('user.blog.show', ['blog' => $post->slug]) }}">{{ $post->title
+                                            }}</a></h4>
                                 </div>
                             </div>
+                            @endif
+                            @php
+                            $count++;
+                            @endphp
+                            @endforeach
+
+
                         </div>
-                        	<div class="sidebar-widget category mb-5">
-		<h4 class="text-center widget-title">Catgeories</h4>
-	 	<ul class="list-unstyled">
-		  <li class="align-items-center d-flex justify-content-between">
-		    <a href="#">Innovation</a>
-		    <span>14</span>
-		  </li>
-		  <li class="align-items-center d-flex justify-content-between">
-		    <a href="#">Software</a>
-		    <span>2</span>
-		  </li>
-		  <li class="align-items-center d-flex justify-content-between">
-		    <a href="#">Social</a>
-		    <span>10</span>
-		  </li>
-		  <li class="align-items-center d-flex justify-content-between">
-		    <a href="#">Trends</a>
-		    <span>5</span>
-		  </li>
-		</ul>
-	</div>
-	
-	<div class="sidebar-widget subscribe mb-5">
-		<h4 class="text-center widget-title">Newsletter</h4>
-		<input type="text" class="form-control" placeholder="Email Address">
-		<a href="#" class="btn btn-primary d-block mt-3">Sign Up</a>
-	</div>
+
+                        <?php
+                        $categoryData = App\Models\Category::paginate(10); // Assuming 10 categories per page
+                        ?>
+                        <div class="sidebar-widget category mb-5">
+                            <h4 class="text-center widget-title">Categories</h4>
+                            <ul class="list-unstyled">
+                                @foreach($categoryData as $category)
+                                    <li class="align-items-center d-flex justify-content-between">
+                                        <a href="">{{ $category->name }}</a>
+                                        <span></span>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                        
+                        {{ $categoryData->links('ajax') }}
+                        
+
+                        <div class="sidebar-widget subscribe mb-5">
+                            <h4 class="text-center widget-title">Newsletter</h4>
+                            <input type="text" class="form-control" placeholder="Email Address">
+                            <a href="#" class="btn btn-primary d-block mt-3">Sign Up</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
+<script>
+    $(document).ready(function() {
+        $('.pagination a').click(function(event) {
+            event.preventDefault();
+    
+            var page = $(this).attr('href');
+    
+            $.ajax({
+                url: page,
+                success: function(data) {
+                    $('#categoryData').html(data);
+                }
+            });
+        });
+    });
+    </script>
+    
 @endsection
