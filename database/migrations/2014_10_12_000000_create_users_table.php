@@ -17,6 +17,8 @@ return new class extends Migration
             $table->boolean('user_type')
             ->nullable()
             ->comment('1: admin, 2: user');
+            $table->text('about');
+
             $table->string('email')->unique();
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();

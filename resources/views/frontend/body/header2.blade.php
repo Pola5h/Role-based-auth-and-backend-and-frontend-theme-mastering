@@ -38,6 +38,7 @@
                     <li class="nav-item"><a href="#" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Category</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                    @auth
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button"
@@ -56,6 +57,10 @@
                                 Out</a>
                         </div>
                     </li>
+                    @else
+                    <li class="nav-item"><a href="{{URL('login')}}" class="nav-link">Log In</a></li>
+
+                    @endauth
                     <li class="nav-item d-lg-none">
                         <div class="search_toggle p-3 d-inline-block bg-white"><i class="ti-search"></i></div>
                     </li>

@@ -32,29 +32,47 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-// dd($request->all());
-        // dd( $request->all());
         $data = new Blog();
-
+    
         if ($request->hasFile('image')) {
             $file = $request->file('image');
-            $file_name = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('media'), $file_name);
-            $data->thumbnail = $file_name;
+            $fileName = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('media'), $fileName);
+            $data->thumbnail = $fileName;
         }
-
+    
         $data->title = $request->input('title');
-        $data->content = $request->input('content');
+        $content = $request->input('content');
+        $content = str_replace('&amp;', '&', $content);
+    
+        // Add classes to HTML heading tags.
+        $content = preg_replace('/<h2>(.*?)<\/h2>/is', '<h2 class="mt-4 mb-3">$1</h2>', $content);
+        $content = preg_replace('/<h3>(.*?)<\/h3>/is', '<h3 class="mt-5 mb-3">$1</h3>', $content);
+    
+        // Replace <blockquote><p> with <blockquote><i class="ti-quote-left mr-2"></i>
+        // and </p></blockquote> with <i class="ti-quote-right ml-2"></i>
+        $content = str_replace('<blockquote><p>', '<blockquote><i class="ti-quote-left mr-2"></i>', $content);
+        $content = str_replace('</p></blockquote>', '<i class="ti-quote-right ml-2"></i></blockquote>', $content);
+    
         $data->category_id = 1;
-
+        $data->content = $content;
         $data->author_id = Auth::user()->id;
         $data->slug = Str::slug($request->input('title')); // Generate a slug based on the title
         $data->save(); // Save the basic data first to get the blog ID
-
+    
         toastr()->success('Data updated successfully');
         return redirect()->back();
     }
+    
 
+
+
+
+
+
+
+
+   
 
 
     public function ckeditor(Request $request)

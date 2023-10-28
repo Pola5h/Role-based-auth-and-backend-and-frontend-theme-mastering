@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], funct
 Route::group(['middleware' => ['auth', 'check_user:2'], 'prefix' => 'user', 'as' => 'user.'], function () {
 
     Route::resource('profile', \App\Http\Controllers\frontend\ProfileController::class);
+    Route::resource('blog', \App\Http\Controllers\frontend\BlogController::class)->only('show')->withoutMiddleware(['auth', 'check_user:2']);
+
 });
 
 

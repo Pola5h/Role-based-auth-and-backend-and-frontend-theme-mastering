@@ -39,7 +39,7 @@
             @method('PUT')
             <div class="card-body">
               <h2 class="mb-4">My Account</h2>
-              <h3 class="card-title">Profile Details</h3>
+              <h3 class="card-title">Profile Image</h3>
               <div class="row align-items-center">
                 <div class="col-auto"> <img src="{{ asset('images/' . $userData->image) }}" width="100"
                     class="img-thumbnail" />
@@ -52,7 +52,7 @@
                 </div>
 
               </div>
-              <h3 class="card-title mt-4">Business Profile</h3>
+              <h3 class="card-title mt-4">Persional Info</h3>
               <div class="row g-3">
                 <div class="col-md">
                   <div class="form-label">Name</div>
@@ -62,6 +62,11 @@
                   <div class="form-label">Email: </div>
                   <input type="email" name="email" class="form-control" value="{{ $userData->email }}" required='true'>
                 </div>
+                <div class="col-md">
+                  <div class="form-label">About: </div>
+                  <textarea name="about" class="form-control" rows="5"  required='true'>{{ $userData->about }}</textarea>
+                </div>
+                
               </div>
 
             </div>
