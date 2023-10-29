@@ -130,7 +130,6 @@ class BlogController extends Controller
     
     public function store(Request $request)
     {
-        // dd($request->all());
         $data = new Blog();
     
  
@@ -190,7 +189,7 @@ class BlogController extends Controller
     
         $data->content = $content;
     
-        $data->category_id = 1;
+        $data->category_id = $request->category;
         $data->author_id = Auth::user()->id;
         $data->slug = Str::slug($request->input('title')); // Generate a slug based on the title
         $data->save(); // Save the basic data first to get the blog ID

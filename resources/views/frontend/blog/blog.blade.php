@@ -52,9 +52,13 @@
                             <span class="single-comment-o"><i class="fa fa-comment-o"></i>0 comment</span>
 
                             <div class="post-share">
-                                <span class="count-number-like">2</span>
-                                <a class="penci-post-like single-like-button"><i class="ti-heart"></i></a>
+                                <a class="penci-post-like single-like-button" data-post-id="{{ $blogData->id }}">
+                                    <i class="ti-heart"></i> like
+                                </a>
+                                <span class="count-number-like" id="like-count">0</span>
                             </div>
+
+
 
                             <div class="list-posts-share">
                                 <a target="_blank" rel="nofollow" href="#"><i class="ti-facebook"></i></a>
@@ -67,21 +71,38 @@
                 </div>
                 <div class="post-author d-flex my-5">
                     <div class="author-img">
-                        <img alt="" src="images/author.jpg" class="avatar avatar-100 photo" width="100" height="100">
+                        <img alt="" src="{{ asset('images/' . $userData->image) }}" class="avatar avatar-100 photo"
+                            width="100" height="100">
                     </div>
 
                     <div class="author-content pl-4">
-                        <h4 class="mb-3"><a href="#" title="" rel="author" class="text-capitalize">Themefisher</a>
+                        <h4 class="mb-3"><a href="#" title="" rel="author" class="text-capitalize">{{ $userData->name
+                                }}</a>
                         </h4>
-                        <p>Hey there. My name is Liam. I was born with the love for traveling. I also love taking
-                            photos with my phone in order to capture moment..</p>
+                        <p>{{ $userData->about }}</p>
 
-                        <a target="_blank" class="author-social" href="#"><i class="ti-facebook"></i></a>
-                        <a target="_blank" class="author-social" href="#"><i class="ti-twitter"></i></a>
-                        <a target="_blank" class="author-social" href="#"><i class="ti-google-plus"></i></a>
-                        <a target="_blank" class="author-social" href="#"><i class="ti-instagram"></i></a>
-                        <a target="_blank" class="author-social" href="#"><i class="ti-pinterest"></i></a>
-                        <a target="_blank" class="author-social" href="#"><i class="ti-tumblr"></i></a>
+                        @foreach ($userSocialMedia as $username)
+                        @if ($username->facebook)
+                        <a target="_blank" class="author-social"
+                            href="https://www.facebook.com/{{ $username->facebook }}/"><i class="ti-facebook"></i></a>
+                        @endif
+                        @if ($username->twitter)
+                        <a target="_blank" class="author-social"
+                            href="https://www.twitter.com/{{ $username->twitter }}/"><i class="ti-twitter"></i></a>
+                        @endif
+
+                        @if ($username->instagram)
+                        <a target="_blank" class="author-social"
+                            href="https://www.instagram.com/{{ $username->instagram }}/"><i
+                                class="ti-instagram"></i></a>
+                        @endif
+
+                        @if ($username->youtube)
+                        <a target="_blank" class="author-social"
+                            href="https://www.youtube.com/{{ $username->youtube }}/"><i class="ti-youtube"></i></a>
+                        @endif
+                        @endforeach
+
                     </div>
                 </div>
                 <nav class="post-pagination clearfix border-top border-bottom py-4">
@@ -142,12 +163,26 @@
                             <h4 class="text-center widget-title">Follow Me</h4>
                             <div class="follow-socials">
 
+                                @foreach ($userSocialMedia as $username)
+                                @if ($username->facebook)
+                                <a href="https://www.facebook.com/{{ $username->facebook }}/"><i
+                                        class="ti-facebook"></i></a>
+                                @endif
+                                @if ($username->twitter)
+                                <a href="https://www.twitter.com/{{ $username->twitter }}/"><i
+                                        class="ti-twitter"></i></a>
+                                @endif
+                                @if ($username->instagram)
+                                <a href="https://www.instagram.com/{{ $username->instagram }}/"><i
+                                        class="ti-instagram"></i></a>
+                                @endif
+                                @if ($username->youtube)
+                                <a href="https://www.youtube.com/{{ $username->youtube }}/"><i
+                                        class="ti-youtube"></i></a>
+                                @endif
+                                @endforeach
 
-                                <a href="#"><i class="ti-facebook"></i></a>
-                                <a href="#"><i class="ti-twitter"></i></a>
-                                <a href="#"><i class="ti-instagram"></i></a>
-                                <a href="#"><i class="ti-youtube"></i></a>
-                                <a href="#"><i class="ti-pinterest"></i></a>
+
                             </div>
                         </div>
 
@@ -202,23 +237,29 @@
 
                         </div>
 
-                        <?php
-                        $categoryData = App\Models\Category::paginate(10); // Assuming 10 categories per page
-                        ?>
+                  <?php
+                        $categoryData = App\Models\Category::paginate(5);
+                    ?>
+
                         <div class="sidebar-widget category mb-5">
                             <h4 class="text-center widget-title">Categories</h4>
-                            <ul class="list-unstyled">
-                                @foreach($categoryData as $category)
-                                    <li class="align-items-center d-flex justify-content-between">
-                                        <a href="">{{ $category->name }}</a>
-                                        <span></span>
-                                    </li>
+                            <ul class="list-unstyled" id="category-list">
+                                <!-- Initial categories are loaded here -->
+                                @foreach($categoryData->take(5) as $category)
+                                <li class="align-items-center d-flex justify-content-between">
+                                    <a href="#">{{ $category->name }}</a>
+                                    <span>{{ $countBlog = App\Models\Blog::where('category_id', $category->id)->count();
+                                        }}</span>
+                                </li>
                                 @endforeach
                             </ul>
+                            <button id="load-more-btn" data-page="2" style="background-color: #CE8460; color: white; display: block; margin: 0 auto; border: none;">Load More</button>
+
                         </div>
-                        
-                        {{ $categoryData->links('ajax') }}
-                        
+
+
+
+
 
                         <div class="sidebar-widget subscribe mb-5">
                             <h4 class="text-center widget-title">Newsletter</h4>
@@ -231,21 +272,102 @@
         </div>
     </div>
 </section>
+
+{{-- script for count like --}}
 <script>
-    $(document).ready(function() {
-        $('.pagination a').click(function(event) {
-            event.preventDefault();
-    
-            var page = $(this).attr('href');
-    
-            $.ajax({
-                url: page,
-                success: function(data) {
-                    $('#categoryData').html(data);
-                }
-            });
+    $(document).ready(function(){
+        $(document).on('click', '.single-like-button', function(){
+            var postId = $(this).attr('data-post-id');
+            var likeButton = $(this);
+            var likeCount = $(this).siblings('.count-number-like');
+            
+            @auth
+                // User is authenticated, proceed with the like logic
+                $.ajax({
+                    url: '/like',
+                    type: 'post',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        post_id: postId
+                    },
+                    success: function(response){
+                        if (response.status === 'liked') {
+                            var currentCount = parseInt(likeCount.text());
+                            likeCount.text(currentCount + 1);
+                            likeButton.find('i').removeClass('ti-heart-broken').addClass('ti-heart');
+                        } else if (response.status === 'unliked') {
+                            var currentCount = parseInt(likeCount.text());
+                            likeCount.text(currentCount - 1);
+                            likeButton.find('i').removeClass('ti-heart').addClass('ti-heart-broken');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("AJAX Error: " + error);
+                        toast('Error: ' + error, 'error');
+                    }
+                });
+            @else
+                // User is not authenticated, show the "Please log in" SweetAlert2 popup
+                Swal.fire({
+                    title: 'Please log in',
+                    text: 'You must be logged in to like this post.',
+                    icon: 'warning',
+                    showCancelButton: false,
+                    confirmButtonText: 'OK'
+                });
+            @endauth
         });
     });
-    </script>
-    
+</script>
+{{-- script for show like stat --}}
+
+<script>
+    $(document).ready(function () {
+    var blogId = {{ $blogData->id }};
+
+    $.get('/get-like-count/' + blogId, function (data) {
+        console.log('data.like_count:', data.like_count);
+        $('#like-count').text(data.like_count);
+
+        if (data.user_liked) {
+            $('.single-like-button i').removeClass('ti-heart-broken').addClass('ti-heart');
+        } else {
+            $('.single-like-button i').removeClass('ti-heart').addClass('ti-heart-broken');
+        }
+    });
+});
+
+</script>
+{{-- for category pagenation --}}
+<script type="text/javascript">
+    $(document).ready(function() {
+    var page = 2; // Initial page number
+
+    $('#load-more-btn').click(function() {
+        $.ajax({
+            url: '/load-more-categories?page=' + page, // Replace with your route for loading more categories
+            type: 'GET',
+            success: function(data) {
+                if (data.categories.length > 0) {
+                    // Append the loaded categories to the list
+                    data.categories.forEach(function(category) {
+                        var categoryItem = '<li class="align-items-center d-flex justify-content-between">' +
+                            '<a href="">' + category.name + '</a>' +
+                            '<span>' + category.count + '</span>' +
+                            '</li>';
+                        $('#category-list').append(categoryItem);
+                    });
+
+                    page++; // Increment the page number
+                } else {
+                    // No more categories to load, hide the "Load More" button
+                    $('#load-more-btn').hide();
+                }
+            }
+        });
+    });
+});
+
+
+</script>
 @endsection

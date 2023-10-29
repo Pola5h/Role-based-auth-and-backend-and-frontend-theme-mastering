@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\SocialMedia;
 use App\Models\Blog;
 use App\Models\Category;
 use Illuminate\Support\Facades\Cookie;
@@ -85,7 +86,7 @@ class BlogController extends Controller
 
         $categoryName = Category::find($blogData->category_id)->name;
         $userData = User::find($blogData->author_id);
-
+        $userSocialMedia = SocialMedia::where('user_id',$blogData->author_id)->get();
         // Fetch related posts by category, excluding the current post
         $relatedPosts = Blog::where('category_id', $blogData->category_id)
             ->where('id', '!=', $blogData->id)
@@ -93,7 +94,7 @@ class BlogController extends Controller
             ->take(3)
             ->get();
         $trendingPosts = Blog::orderBy('visits_count', 'desc')->take(3)->get();
-        return response(view('frontend.blog.blog', compact('blogData', 'userData', 'categoryName', 'previousPost', 'nextPost', 'relatedPosts','trendingPosts')))
+        return response(view('frontend.blog.blog', compact('blogData', 'userData','userSocialMedia', 'categoryName', 'previousPost', 'nextPost', 'relatedPosts','trendingPosts')))
             ->cookie($blogKey, true, 60 * 24 * 365); // This cookie lasts one year
     }
 

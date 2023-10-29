@@ -68,6 +68,28 @@
                 </div>
                 
               </div>
+              <h3 class="card-title mt-4">Scoical media</h3>
+              <div class="input-icon mb-3">
+           
+              </div>
+              <div class="row g-3">
+                <div class="col-md">
+                  <div class="form-label">Facebook</div>
+                  <input type="text" name="facebook" placeholder="@ facebook username" class="form-control" value="{{ $userSocialData->facebook ?? '' }}" >
+                </div>
+                <div class="col-md">
+                  <div class="form-label">Twitter: </div>
+                  <input type="text" name="twitter"  placeholder=" @ twitter username" class="form-control" value="{{ $userSocialData->twitter ?? ''}}">
+                </div>
+                <div class="col-md">
+                  <div class="form-label">Instagram: </div>
+                  <input type="text" name="instagram"  placeholder="@ instagram username" class="form-control" value="{{ $userSocialData->instagram ?? ''}}">
+                </div>
+                <div class="col-md">
+                  <div class="form-label">Youtube: </div>
+                  <input type="text" name="youtube"  placeholder=" @ youtube username" class="form-control" value="{{ $userSocialData->youtube?? '' }}">
+                </div>
+              </div>
 
             </div>
             <div class="card-footer bg-transparent mt-auto">

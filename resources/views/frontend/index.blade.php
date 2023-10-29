@@ -57,12 +57,12 @@ $count_blog = \App\Models\Blog::count();
                     @foreach ($blog_articles as $articles)
                     <div class="col-lg-3 col-md-6">
                         <article class="post-grid mb-5">
-                            <a class="post-thumb mb-4 d-block" href="#">
+                            <a class="post-thumb mb-4 d-block" href="{{ route('user.blog.show', ['blog' => $articles->slug]) }}">
                                 <img src="{{ asset('media/' . $articles->thumbnail) }}" alt="" class="img-fluid w-100">
                             </a>
                             <span class="cat-name text-color font-extra text-sm text-uppercase letter-spacing-1"> {{
                                 $category_list->firstWhere('id', $articles->category_id)->name }}</span>
-                            <h3 class="post-title mt-1"><a href="#">{{$articles->title}}</a></h3>
+                            <h3 class="post-title mt-1"><a href="{{ route('user.blog.show', ['blog' => $articles->slug]) }}">{{$articles->title}}</a></h3>
 
                             <span class="text-muted letter-spacing text-uppercase font-sm">{{
                                 $articles->created_at->format('F j, Y') }}</span>

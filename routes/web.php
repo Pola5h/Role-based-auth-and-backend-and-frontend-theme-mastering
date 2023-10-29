@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\Like; 
+use App\Models\Category; // Import the Blog model
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,6 +28,43 @@ Route::get('/dashboard', function () {
     $user = auth()->user();
     return view($user->user_type === 1 ? 'admin.index' : ($user->user_type === 2 ? 'frontend.index' : 'welcome'));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// route for like
+Route::post('/like', [App\Http\Controllers\frontend\likeController::class, 'store'])->middleware(['auth', 'verified'])->name('like.store');
+Route::get('/get-like-count/{blogId}', function ($blogId) {
+    $userId = optional(Auth::user())->id;
+
+    $likeCount = Like::where('blog_id', $blogId)->count();
+    $userLiked = $userId ? Like::where('blog_id', $blogId)->where('user_id', $userId)->exists() : null;
+
+    return response()->json(['like_count' => $likeCount, 'user_liked' => $userLiked]);
+});
+
+// route for get category
+Route::get('/load-more-categories', function () {
+    $page = request('page');
+    $perPage = 5; // Number of categories per page
+    $skip = ($page - 1) * $perPage;
+
+    $categories = Category::skip($skip)->take($perPage)->get();
+
+    // Create an array to hold categories with count information
+    $categoriesWithCount = [];
+
+    foreach ($categories as $category) {
+        $countBlog = App\Models\Blog::where('category_id', $category->id)->count();
+        $categoriesWithCount[] = [
+            'id' => $category->id,
+            'name' => $category->name,
+            'count' => $countBlog,
+        ];
+    }
+
+    // Return the categories with count as JSON
+    return response()->json(['categories' => $categoriesWithCount]);
+});
+
+
 
 
 Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], function () {

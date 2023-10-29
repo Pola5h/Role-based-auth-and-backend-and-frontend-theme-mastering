@@ -15,6 +15,10 @@ class Blog extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+    public function likesCount()
+    {
+        return $this->hasMany(Like::class, 'blog_id')->selectRaw('count(*) as count')->groupBy('blog_id');
+    }
     
 
 }

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
-
+use App\Models\SocialMedia;
 
 class SettingController extends Controller
 {
@@ -17,7 +17,8 @@ class SettingController extends Controller
     public function index()
     {
         $userData = Auth::user();
-        return view('admin.setting.setting',compact('userData'));
+        $userSocialData = SocialMedia::where('user_id', Auth::user()->id)->first();
+        return view('admin.setting.setting', compact('userData', 'userSocialData'));
     }
 
     /**
@@ -58,8 +59,8 @@ class SettingController extends Controller
 
      public function update(Request $request, string $id)
      {
-        
          $user = User::findOrFail($id);
+         $userSocialData = SocialMedia::where('user_id', $id)->firstOrNew();
      
          $request->validate([
              'name' => 'required',
@@ -67,8 +68,6 @@ class SettingController extends Controller
              'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048|dimensions:min_width=100,min_height=100,max_width=1000,max_height=1000',
          ]);
      
-
-       // check if any image added
          if ($request->hasFile('image')) {
              $file = $request->file('image');
              $file_name = time() . '.' . $file->getClientOriginalExtension();
@@ -76,18 +75,20 @@ class SettingController extends Controller
              $user->image = $file_name;
          }
      
-         $user->name = $request->input('name');
-         $user->email = $request->input('email');
-    
+         $user->fill($request->only('name', 'email'));
+         $userSocialData->fill($request->only('facebook', 'twitter', 'youtube', 'instagram'));
      
+         $userSocialData->save();
          $user->save();
+     
          toastr()->success('Data updated successfully');
-
+     
          return redirect()->back();
      }
+     
 
-     
-     
+
+
 
     /**
      * Remove the specified resource from storage.
