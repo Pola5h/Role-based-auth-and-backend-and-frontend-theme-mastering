@@ -69,7 +69,7 @@ class BlogController extends Controller
     // public function store(Request $request)
     // {
     //     $data = new Blog();
-    
+
     //     if ($request->hasFile('image')) {
     //         $file = $request->file('image');
     //         $fileName = time() . '.' . $file->getClientOriginalExtension();
@@ -82,14 +82,14 @@ class BlogController extends Controller
     //         $file->move(public_path('media'), $fileNameBanner);
     //         $data->banner = $fileNameBanner;
     //     }
-    
+
     //     $data->title = $request->input('title');
 
 
     //     $content = $request->input('content');
     //     $content = str_replace('&amp;', '&', $content);
-    
-    
+
+
     //     // Add classes to HTML heading tags.
     //     $content = preg_replace('/<h2>(.*?)<\/h2>/is', '<h2 class="mt-4 mb-3">$1</h2>', $content);
     //     $content = preg_replace('/<h3>(.*?)<\/h3>/is', '<h3 class="mt-5 mb-3">$1</h3>', $content);
@@ -103,7 +103,7 @@ class BlogController extends Controller
     //     $content = preg_replace_callback('/<p>(.*?)<\/p>/is', function ($matches) use (&$content) {
     //         // Extract all of the img tags from the matched string.
     //         $imgTags = preg_match_all('/<img src="(.*?)" (.*?)>/is', $matches[1], $imgMatches);
-    
+
     //         // If there are two img tags, then wrap them in a row of columns.
     //         if (count($imgMatches[0]) >= 2) {
     //             $content = '<div class="row">';
@@ -114,7 +114,7 @@ class BlogController extends Controller
     //             }
     //             $content .= '</div>';
     //         }
-    
+
     //         return $content;
     //     }, $content);
     //     $data->content = $content;
@@ -123,53 +123,53 @@ class BlogController extends Controller
     //     $data->author_id = Auth::user()->id;
     //     $data->slug = Str::slug($request->input('title')); // Generate a slug based on the title
     //     $data->save(); // Save the basic data first to get the blog ID
-    
+
     //     toastr()->success('Data updated successfully');
     //     return redirect()->back();
     // }
-    
+
     public function store(Request $request)
     {
         $data = new Blog();
-    
- 
+
+
         if ($request->hasFile('image')) {
             $imageFile = $request->file('image');
             $imageFileName = time() . '_' . uniqid() . '.' . $imageFile->getClientOriginalExtension();
             $imageFile->move(public_path('media'), $imageFileName);
             $data->thumbnail = $imageFileName;
         }
-        
+
         if ($request->hasFile('banner')) {
             $bannerFile = $request->file('banner');
             $bannerFileName = time() . '_' . uniqid() . '.' . $bannerFile->getClientOriginalExtension();
             $bannerFile->move(public_path('media'), $bannerFileName);
             $data->banner = $bannerFileName;
         }
-        
-    
+
+
         $data->title = $request->input('title');
 
 
         // ... (existing code for file uploads, title, category, etc.)
-    
+
         $content = $request->input('content');
         $content = str_replace('&amp;', '&', $content);
-    
+
         // Add classes to HTML heading tags.
         $content = preg_replace('/<h2>(.*?)<\/h2>/is', '<h2 class="mt-4 mb-3">$1</h2>', $content);
         $content = preg_replace('/<h4>(.*?)<\/h4>/is', '<h3 class="mt-5 mb-3">$1</h3>', $content);
-    
+
         // Replace <blockquote><p> with <blockquote><i class="ti-quote-left mr-2"></i>
         // and </p></blockquote> with <i class="ti-quote-right ml-2"></i></blockquote>
         $content = str_replace('<blockquote><p>', '<blockquote><i class="ti-quote-left mr-2"></i>', $content);
         $content = str_replace('</p></blockquote>', '<i class="ti-quote-right ml-2"></i></blockquote>', $content);
-    
+
         // Modify <p> tags with images to wrap images in a row of columns.
         $content = preg_replace_callback('/<p>(.*?)<\/p>/is', function ($matches) {
             // Extract all of the img tags from the matched string.
             $imgTags = preg_match_all('/<img src="(.*?)" (.*?)>/is', $matches[1], $imgMatches);
-    
+
             // Wrap the images in a row of columns if there are any.
             if (count($imgMatches[0]) >= 1) {
                 $content = '<div class="row">';
@@ -183,21 +183,22 @@ class BlogController extends Controller
                 // If no images are found, keep the original content.
                 $content = '<p>' . $matches[1] . '</p>';
             }
-    
+
             return $content;
         }, $content);
-    
+
         $data->content = $content;
-    
+
         $data->category_id = $request->category;
         $data->author_id = Auth::user()->id;
         $data->slug = Str::slug($request->input('title')); // Generate a slug based on the title
         $data->save(); // Save the basic data first to get the blog ID
-    
+
         toastr()->success('Data updated successfully');
-        return redirect()->back(); 
-       }
-    
+        // return redirect()->back(); 
+        return to_route('user.blog.show',$data->slug);
+    }
+
 
 
 

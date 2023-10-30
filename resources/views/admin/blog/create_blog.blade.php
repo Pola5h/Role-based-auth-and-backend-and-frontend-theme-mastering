@@ -42,7 +42,7 @@
                                             <div class="col-auto mb-3">
                                                 <label class="form-label required">Thumbnail</label>
 
-                                                <input type="file" class="form-control" name="image" />
+                                                <input type="file" class="form-control" name="image" required />
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -53,7 +53,7 @@
                                         
                                             <div class="col-auto mb-3">
                                                 <label class="form-label required">Banner Image</label>
-                                                <input type="file" class="form-control" name="banner" />
+                                                <input type="file" class="form-control" name="banner" required />
                                             </div>
                                         </div>
                                         
@@ -66,18 +66,18 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Content
+                                            <label class="form-label required">Content</label>
                                                 <textarea class="form-control" name="content" id="editor" name="example-textarea-input"
-                                                    rows="100" placeholder="Content.."></textarea>
+                                                    rows="100" placeholder="Content.." required></textarea>
 
                                         </div>
 
 
                                         <div class="mb-3">
-                                            <div class="form-label">
+                                            <div class="form-label required">
                                                 Category
                                             </div>
-                                            <select name="category"  class="form-select" id="select-states" >
+                                            <select name="category"  class="form-select" id="select-states" required>
                                                 <option value="" disabled selected> Select Category</option>
                                                 @foreach(\App\Models\Category::get() as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -86,6 +86,7 @@
 
                                             </select>
                                         </div>
+                                 
 
                                     </div>
 

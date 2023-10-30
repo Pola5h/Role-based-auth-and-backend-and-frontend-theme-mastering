@@ -61,9 +61,12 @@
 
 
                             <div class="list-posts-share">
-<a target="_blank" rel="nofollow" href="{{ $link['facebook'] }}"><i class="ti-facebook"></i></a>
-<a target="_blank" rel="nofollow" href="{{ $link['twitter'] }}"><i class="ti-twitter"></i></a>
-<a target="_blank" rel="nofollow" href="{{ $link['linkedin'] }}"><i class="ti-linkedin"></i></a>
+                                <a target="_blank" rel="nofollow" href="{{ $link['facebook'] }}"><i
+                                        class="ti-facebook"></i></a>
+                                <a target="_blank" rel="nofollow" href="{{ $link['twitter'] }}"><i
+                                        class="ti-twitter"></i></a>
+                                <a target="_blank" rel="nofollow" href="{{ $link['linkedin'] }}"><i
+                                        class="ti-linkedin"></i></a>
 
                             </div>
                         </div>
@@ -105,24 +108,24 @@
 
                     </div>
                 </div>
-                    <nav class="post-pagination clearfix border-top border-bottom py-4">
-                        <div class="prev-post">
-                            @if ($previousPost)
-                            <a href="{{ route('user.blog.show', $previousPost->slug) }}">
-                                <span class="text-uppercase font-sm letter-spacing">Previous</span>
-                                <h4 class="mt-3">{{ $previousPost->title }}</h4>
-                            </a>
-                            @endif
-                        </div>
-                        <div class="next-post">
-                            @if ($nextPost)
-                            <a href="{{ route('user.blog.show', $nextPost->slug) }}">
-                                <span class="text-uppercase font-sm letter-spacing">Next</span>
-                                <h4 class="mt-3">{{ $nextPost->title }}</h4>
-                            </a>
-                            @endif
-                        </div>
-                    </nav>
+                <nav class="post-pagination clearfix border-top border-bottom py-4">
+                    <div class="prev-post">
+                        @if ($previousPost)
+                        <a href="{{ route('user.blog.show', $previousPost->slug) }}">
+                            <span class="text-uppercase font-sm letter-spacing">Previous</span>
+                            <h4 class="mt-3">{{ $previousPost->title }}</h4>
+                        </a>
+                        @endif
+                    </div>
+                    <div class="next-post">
+                        @if ($nextPost)
+                        <a href="{{ route('user.blog.show', $nextPost->slug) }}">
+                            <span class="text-uppercase font-sm letter-spacing">Next</span>
+                            <h4 class="mt-3">{{ $nextPost->title }}</h4>
+                        </a>
+                        @endif
+                    </div>
+                </nav>
 
                 <div class="related-posts-block mt-5">
                     <h3 class="news-title mb-4 text-center">You May Also Like</h3>
@@ -265,7 +268,7 @@
                                 <button type="submit" class="btn btn-primary d-block mt-3">Sign Up</button>
                             </form>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

@@ -51,7 +51,7 @@ class NewsletterController extends Controller
     // }
     public function subscribe(Request $request)
     {
-        $apiKey = 'f572ac13fa0683df4004701a512eebd7-us21';
+        $apiKey = '2da2fe6ecd1d361c17fd8586dd79ea89-us21';
         $listId = '9c784bbac6';
         $email = $request->input('email');
     
