@@ -64,6 +64,7 @@ Route::get('/load-more-categories', function () {
     return response()->json(['categories' => $categoriesWithCount]);
 });
 
+Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe']);
 
 
 

@@ -61,10 +61,10 @@
 
 
                             <div class="list-posts-share">
-                                <a target="_blank" rel="nofollow" href="#"><i class="ti-facebook"></i></a>
-                                <a target="_blank" rel="nofollow" href="#"><i class="ti-twitter"></i></a>
-                                <a target="_blank" rel="nofollow" href="#"><i class="ti-pinterest"></i></a>
-                                <a target="_blank" rel="nofollow" href="#"><i class="ti-linkedin"></i></a>
+<a target="_blank" rel="nofollow" href="{{ $link['facebook'] }}"><i class="ti-facebook"></i></a>
+<a target="_blank" rel="nofollow" href="{{ $link['twitter'] }}"><i class="ti-twitter"></i></a>
+<a target="_blank" rel="nofollow" href="{{ $link['linkedin'] }}"><i class="ti-linkedin"></i></a>
+
                             </div>
                         </div>
                     </div>
@@ -105,24 +105,24 @@
 
                     </div>
                 </div>
-                <nav class="post-pagination clearfix border-top border-bottom py-4">
-                    <div class="prev-post">
-                        @if ($previousPost)
-                        <a href="{{ route('user.blog.show', $previousPost->slug) }}">
-                            <span class="text-uppercase font-sm letter-spacing">Previous</span>
-                            <h4 class="mt-3">{{ $previousPost->title }}</h4>
-                        </a>
-                        @endif
-                    </div>
-                    <div class="next-post">
-                        @if ($nextPost)
-                        <a href="{{ route('user.blog.show', $nextPost->slug) }}">
-                            <span class="text-uppercase font-sm letter-spacing">Next</span>
-                            <h4 class="mt-3">{{ $nextPost->title }}</h4>
-                        </a>
-                        @endif
-                    </div>
-                </nav>
+                    <nav class="post-pagination clearfix border-top border-bottom py-4">
+                        <div class="prev-post">
+                            @if ($previousPost)
+                            <a href="{{ route('user.blog.show', $previousPost->slug) }}">
+                                <span class="text-uppercase font-sm letter-spacing">Previous</span>
+                                <h4 class="mt-3">{{ $previousPost->title }}</h4>
+                            </a>
+                            @endif
+                        </div>
+                        <div class="next-post">
+                            @if ($nextPost)
+                            <a href="{{ route('user.blog.show', $nextPost->slug) }}">
+                                <span class="text-uppercase font-sm letter-spacing">Next</span>
+                                <h4 class="mt-3">{{ $nextPost->title }}</h4>
+                            </a>
+                            @endif
+                        </div>
+                    </nav>
 
                 <div class="related-posts-block mt-5">
                     <h3 class="news-title mb-4 text-center">You May Also Like</h3>
@@ -237,9 +237,7 @@
 
                         </div>
 
-                  <?php
-                        $categoryData = App\Models\Category::paginate(5);
-                    ?>
+                        <?php  $categoryData = App\Models\Category::paginate(5);  ?>
 
                         <div class="sidebar-widget category mb-5">
                             <h4 class="text-center widget-title">Categories</h4>
@@ -253,19 +251,21 @@
                                 </li>
                                 @endforeach
                             </ul>
-                            <button id="load-more-btn" data-page="2" style="background-color: #CE8460; color: white; display: block; margin: 0 auto; border: none;">Load More</button>
+                            <button id="load-more-btn" data-page="2"
+                                style="background-color: #CE8460; color: white; display: block; margin: 0 auto; border: none;">Load
+                                More</button>
 
                         </div>
-
-
-
-
 
                         <div class="sidebar-widget subscribe mb-5">
                             <h4 class="text-center widget-title">Newsletter</h4>
-                            <input type="text" class="form-control" placeholder="Email Address">
-                            <a href="#" class="btn btn-primary d-block mt-3">Sign Up</a>
+                            <form action="/newsletter/subscribe" method="post">
+                                @csrf
+                                <input type="email" name="email" class="form-control" placeholder="Email Address">
+                                <button type="submit" class="btn btn-primary d-block mt-3">Sign Up</button>
+                            </form>
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -367,7 +367,5 @@
         });
     });
 });
-
-
 </script>
 @endsection

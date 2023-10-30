@@ -22,9 +22,13 @@
     <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- CSS Style -->
+    <!-- Sweet alart, Jquery, jorenvanhocht/laravel-share -->
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+
+    <!-- CSS Style -->
 
     @include('frontend.body.style')
 
@@ -33,7 +37,7 @@
 <body>
     <!-- header -->
 
-  
+
     @yield('frontend')
 
     <!-- footer -->

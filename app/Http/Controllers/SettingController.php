@@ -76,8 +76,11 @@ class SettingController extends Controller
          }
      
          $user->fill($request->only('name', 'email'));
-         $userSocialData->fill($request->only('facebook', 'twitter', 'youtube', 'instagram'));
-     
+         $userSocialData = SocialMedia::updateOrCreate(
+            ['user_id' => $id],
+            ['facebook' => $request->facebook, 'twitter' => $request->twitter, 'youtube' => $request->youtube, 'instagram' => $request->instagram]
+        );
+        
          $userSocialData->save();
          $user->save();
      
@@ -86,10 +89,6 @@ class SettingController extends Controller
          return redirect()->back();
      }
      
-
-
-
-
     /**
      * Remove the specified resource from storage.
      */

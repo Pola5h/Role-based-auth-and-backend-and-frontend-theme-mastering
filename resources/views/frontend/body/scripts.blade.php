@@ -23,6 +23,7 @@
 
 <!-- Main Js -->
 <script src="{{ URL::asset('../frontend/assets/js/custom.js') }}"></script>
+<script src="{{ asset('js/share.js') }}"></script>
 
 
 

@@ -158,7 +158,7 @@ class BlogController extends Controller
     
         // Add classes to HTML heading tags.
         $content = preg_replace('/<h2>(.*?)<\/h2>/is', '<h2 class="mt-4 mb-3">$1</h2>', $content);
-        $content = preg_replace('/<h3>(.*?)<\/h3>/is', '<h3 class="mt-5 mb-3">$1</h3>', $content);
+        $content = preg_replace('/<h4>(.*?)<\/h4>/is', '<h3 class="mt-5 mb-3">$1</h3>', $content);
     
         // Replace <blockquote><p> with <blockquote><i class="ti-quote-left mr-2"></i>
         // and </p></blockquote> with <i class="ti-quote-right ml-2"></i></blockquote>
