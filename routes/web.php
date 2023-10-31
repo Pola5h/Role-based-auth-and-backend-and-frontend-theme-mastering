@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Like; 
+use App\Models\Like;
 use App\Models\Category; // Import the Blog model
 use Illuminate\Http\Request;
 /*
@@ -66,6 +66,9 @@ Route::get('/load-more-categories', function () {
 
 Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe']);
 
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
+
+Route::resource('comment', \App\Http\Controllers\CommentController::class)->middleware(['auth', 'verified']);
 
 
 Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], function () {
@@ -73,16 +76,14 @@ Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], funct
     Route::resource('profile', \App\Http\Controllers\ProfileController::class);
     Route::resource('setting', \App\Http\Controllers\SettingController::class);
     Route::resource('blog', \App\Http\Controllers\backend\BlogController::class);
-    Route::post('blog_ckeditor',[\App\Http\Controllers\backend\BlogController::class ,'ckeditor'])->name('blog.ckeditor');
+    Route::post('blog_ckeditor', [\App\Http\Controllers\backend\BlogController::class, 'ckeditor'])->name('blog.ckeditor');
     Route::post('blog_remove_image', [\App\Http\Controllers\backend\BlogController::class, 'removeImage'])->name('blog.removeImage');
-
 });
 
 Route::group(['middleware' => ['auth', 'check_user:2'], 'prefix' => 'user', 'as' => 'user.'], function () {
 
     Route::resource('profile', \App\Http\Controllers\frontend\ProfileController::class);
     Route::resource('blog', \App\Http\Controllers\frontend\BlogController::class)->only('show')->withoutMiddleware(['auth', 'check_user:2']);
-
 });
 
 

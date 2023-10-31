@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\Blog;
+use App\Models\Tag;
+
 
 
 class BlogController extends Controller
@@ -187,16 +189,27 @@ class BlogController extends Controller
             return $content;
         }, $content);
 
-        $data->content = $content;
+        // check if any new tag exist
 
+        $tags = []; // Create an array to store tag values
+
+        foreach ($request->tag as $tagValue) {
+            Tag::firstOrCreate(['name' => $tagValue]);
+            $tags[] = $tagValue; // Store each tag value in the array
+        }
+
+        $tagString = implode(' | ', $tags); // Concatenate the tags into a single string
+        $data->content = $content;
         $data->category_id = $request->category;
         $data->author_id = Auth::user()->id;
-        $data->slug = Str::slug($request->input('title')); // Generate a slug based on the title
+        $data->slug = Str::slug($request->input('title'));
+        $data->tags = $tagString;
+        // Generate a slug based on the title
         $data->save(); // Save the basic data first to get the blog ID
 
         toastr()->success('Data updated successfully');
         // return redirect()->back(); 
-        return to_route('user.blog.show',$data->slug);
+        return to_route('user.blog.show', $data->slug);
     }
 
 

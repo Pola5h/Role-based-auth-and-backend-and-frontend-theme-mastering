@@ -68,9 +68,26 @@
             </div>
 
             <div class="text-right search d-none d-lg-block">
-                <div class="search_toggle"><i class="ti-search"></i></div>
+
+                    <form action="{{ route('search') }}" method="GET" id="search-form">
+                        <input type="text" name="query" placeholder="Search..." onkeypress="return event.keyCode != 13;">
+                        </div>
+                    </form>
+                                    
+                </div>
             </div>
         </div>
     </nav>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#search-form input[name="query"]').on('keypress', function (e) {
+                if (e.keyCode === 13) {
+                    $('#search-form').submit();
+                }
+            });
+        });
+    </script>
 
 </header>

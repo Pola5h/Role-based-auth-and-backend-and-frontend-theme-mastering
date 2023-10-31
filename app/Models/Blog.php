@@ -19,6 +19,8 @@ class Blog extends Model
     {
         return $this->hasMany(Like::class, 'blog_id')->selectRaw('count(*) as count')->groupBy('blog_id');
     }
-    
-
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

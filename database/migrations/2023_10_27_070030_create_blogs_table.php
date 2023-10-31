@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreign('author_id')->references('id')->on('users');
             $table->dateTime('last_modified')->nullable();
             $table->unsignedBigInteger('category_id');
+            $table->string('tags');
             $table->integer('visits_count')->default(0);
 
             // Add a foreign key constraint to link to the 'categories' table if applicable.

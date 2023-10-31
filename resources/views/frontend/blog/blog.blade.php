@@ -3,8 +3,6 @@
 @section('title', $blogData->title)
 @include('frontend.body.header2')
 
-
-
 <section class="section-padding">
     <div class="container">
         <div class="row">
@@ -40,11 +38,11 @@
                         </div>
 
                         <div class="post-tags py-4">
-                            <a href="#">#Health</a>
-                            <a href="#">#Game</a>
-                            <a href="#">#Tour</a>
-                        </div>
+                            @foreach(explode('|', $blogData->tags) as $tag)
+                            <a href="#">{{ '#' . ucfirst(trim($tag)) }}</a>
+                            @endforeach
 
+                        </div>
 
                         <div
                             class="tags-share-box center-box d-flex text-center justify-content-between border-top border-bottom py-3">
@@ -57,8 +55,6 @@
                                 </a>
                                 <span class="count-number-like" id="like-count">0</span>
                             </div>
-
-
 
                             <div class="list-posts-share">
                                 <a target="_blank" rel="nofollow" href="{{ $link['facebook'] }}"><i
@@ -149,6 +145,65 @@
                     </div>
                 </div>
 
+                <div class="comment-area my-5">
+                    <h3 class="mb-4 text-center">Comments</h3>
+
+                    <script>
+                        var mediaUrl = "{{ asset('images/') }}";
+                        setInterval(function() {
+                            $.ajax({
+                                type: 'GET',
+                                url: '/comment/' + '{{ $blogData->id }}',
+                                success: function(data) {
+                                    $('.comment-area').empty();
+                                    data.comments.forEach(function(comment) {
+                                        var commentHtml = `
+
+                                            <div class="comment-area-box media">
+                                                <img alt=""width="60" height="60" src="${mediaUrl}/${comment.image}" class="img-fluid float-left mr-3 mt-2">
+                                                <div class="media-body ml-4">
+                                                    <h4 class="mb-0">${comment.user}</h4>
+                                                    <span class="date-comm font-sm text-capitalize text-color"><i class="ti-time mr-2"></i>${comment.date}</span>
+                                                    <div class="comment-content mt-3">
+                                                        <p>${comment.content}</p>
+                                                    </div>
+                                                    <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                                    <a href="#" class="text-underline ">Reply</a>
+                                </div>
+
+                            
+                                               
+                                                </div>
+                                            </div>`;
+                                        $('.comment-area').append(commentHtml);
+                                    });
+                                },
+                                error: function(jqXHR, textStatus, errorThrown) {
+                                    console.log(textStatus, errorThrown);
+                                }
+                            });
+                        }, 1500); 
+                    </script>
+                    
+
+                </div>
+
+                <form class="comment-form mb-5 gray-bg p-5" id="comment-form" method="POST"> @csrf
+                    <!-- Add this line to include the CSRF token -->
+
+                    <h3 class="mb-4 text-center">Leave a comment</h3>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <textarea class="form-control mb-3" name="comment" id="comment" cols="30" rows="5"
+                                placeholder="Comment"></textarea>
+                        </div>
+
+                    </div>
+
+                    <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
+                        action="/comment" value="Comment">
+                </form>
+
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <div class="sidebar sidebar-right">
@@ -184,7 +239,6 @@
                                         class="ti-youtube"></i></a>
                                 @endif
                                 @endforeach
-
 
                             </div>
                         </div>
@@ -236,7 +290,6 @@
                             $count++;
                             @endphp
                             @endforeach
-
 
                         </div>
 
@@ -371,4 +424,37 @@
     });
 });
 </script>
+
+{{-- comment --}}
+<script>
+$(document).ready(function() {
+    $('#comment-form').on('submit', function(e) {
+        e.preventDefault();
+        var comment = $('#comment').val();
+        $.ajax({
+            type: 'POST',
+            url: '/comment',
+            data: {
+                _token: $('input[name="_token"]').val(),
+                blog_id: '{{ $blogData->id }}',
+                comment: comment,
+            },
+            success: function(response) {
+                // You can handle success here
+                console.log(response);
+                
+                // Clear the textarea after a successful comment submission
+                $('#comment').val('');
+            },
+            error: function(response) {
+                // You can handle error here
+                console.log(response);
+            }
+        });
+    });
+});
+
+
+</script>
+
 @endsection

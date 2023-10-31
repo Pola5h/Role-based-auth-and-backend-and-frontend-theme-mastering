@@ -68,7 +68,7 @@
                                         <div class="mb-3">
                                             <label class="form-label required">Content</label>
                                                 <textarea class="form-control" name="content" id="editor" name="example-textarea-input"
-                                                    rows="100" placeholder="Content.." required></textarea>
+                                                    rows="100" placeholder="Content.." ></textarea>
 
                                         </div>
 
@@ -86,7 +86,19 @@
 
                                             </select>
                                         </div>
-                                 
+                                        <div class="mb-3">
+                                            <div class="form-label required">
+                                                Tags
+                                            </div>
+                                            <select name="tag[]"  class="form-select" id="select-statesx" multiple required>
+                                                <option value="" disabled selected> Input or Select Tags</option>
+                                                @foreach(\App\Models\Tag::get() as $tag)
+                                                <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                            @endforeach
+                                            
+
+                                            </select>
+                                        </div>
 
                                     </div>
 

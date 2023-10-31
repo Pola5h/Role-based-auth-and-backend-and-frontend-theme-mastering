@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Category;
+use App\Models\Tag;
+
 use Illuminate\Support\Facades\Hash;
 
 
@@ -156,5 +158,34 @@ class DatabaseSeeder extends Seeder
         
         Category::insert($categories);
         
+
+
+
+        $tags = [
+            ['name' => 'health'],
+            ['name' => 'technology'],
+            ['name' => 'science'],
+            ['name' => 'sports'],
+            ['name' => 'education'],
+            ['name' => 'entertainment'],
+            ['name' => 'business'],
+            ['name' => 'politics'],
+            ['name' => 'travel'],
+            ['name' => 'lifestyle'],
+            ['name' => 'food'],
+            ['name' => 'music'],
+            ['name' => 'movies'],
+            ['name' => 'books'],
+            ['name' => 'fashion'],
+            ['name' => 'art'],
+            ['name' => 'gaming'],
+            ['name' => 'finance'],
+            ['name' => 'environment'],
+            ['name' => 'automobile']
+        ];
+        Tag::insert($tags);
+
+
+
     }
 }
