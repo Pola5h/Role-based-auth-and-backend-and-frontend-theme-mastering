@@ -51,8 +51,8 @@ class NewsletterController extends Controller
     // }
     public function subscribe(Request $request)
     {
-        $apiKey = '2da2fe6ecd1d361c17fd8586dd79ea89-us21';
-        $listId = '9c784bbac6';
+        $apiKey = env('MAILCHIMP_API_KEY ');
+        $listId = env('MAILCHIMP_LIST_ID');
         $email = $request->input('email');
     
         $mailchimp = new MailChimp($apiKey);
