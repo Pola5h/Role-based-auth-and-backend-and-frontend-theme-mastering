@@ -12,6 +12,12 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     public function __construct()
+     {
+         $this->middleware(['auth', 'verified'])->except('show');
+     }
+
     public function index()
     {
         //

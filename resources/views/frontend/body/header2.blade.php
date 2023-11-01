@@ -37,7 +37,7 @@
 
                     <li class="nav-item"><a href="#" class="nav-link">About</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Category</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Contact</a></li>
+                    <li class="nav-item"><a href="{{ URL('contact') }}" class="nav-link">Contact</a></li>
                     @auth
 
                     <li class="nav-item dropdown">

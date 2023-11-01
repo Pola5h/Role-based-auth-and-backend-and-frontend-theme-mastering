@@ -21,7 +21,7 @@
                         <ul id="menu" class="menu navbar-nav mx-auto">
                             <li class="nav-item"><a href="{{URL('/')}}" class="nav-link">Home</a></li>
 
-                            <li class="nav-item dropdown">
+                            {{-- <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Blog Posts
@@ -33,10 +33,12 @@
                                     <a class="dropdown-item" href="#">Standard Right
                                         Sidebar</a>
                                 </div>
-                            </li>
+                            </li> --}}
 
                             <li class="nav-item"><a href="#" class="nav-link">About</a></li>
                             <li class="nav-item"><a href="#" class="nav-link">Category</a></li>
+                            <li class="nav-item"><a href="{{ URL('contact') }}" class="nav-link">Contact</a></li>
+
 
                             @auth
                             {{-- User is logged in --}}

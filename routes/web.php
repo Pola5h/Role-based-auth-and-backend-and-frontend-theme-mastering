@@ -57,6 +57,7 @@ Route::get('/load-more-categories', function () {
             'id' => $category->id,
             'name' => $category->name,
             'count' => $countBlog,
+            'url' => route('category.blog', ['slug' => $category->slug]), // Add the URL for each category
         ];
     }
 
@@ -68,7 +69,10 @@ Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController
 
 Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])->name('search');
 
-Route::resource('comment', \App\Http\Controllers\CommentController::class)->middleware(['auth', 'verified']);
+Route::resource('comment', \App\Http\Controllers\CommentController::class);
+
+Route::get('blog/{slug}', [\App\Http\Controllers\frontend\BlogController::class, 'category_wise_blog'])->name('category.blog');
+
 
 
 Route::group(['middleware' => ['auth', 'check_user:1'], 'as' => 'admin.'], function () {
@@ -84,8 +88,10 @@ Route::group(['middleware' => ['auth', 'check_user:2'], 'prefix' => 'user', 'as'
 
     Route::resource('profile', \App\Http\Controllers\frontend\ProfileController::class);
     Route::resource('blog', \App\Http\Controllers\frontend\BlogController::class)->only('show')->withoutMiddleware(['auth', 'check_user:2']);
+
 });
 
+Route::resource('contact', \App\Http\Controllers\frontend\ContactController::class);
 
 
 

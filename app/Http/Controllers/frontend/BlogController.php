@@ -89,18 +89,18 @@ class BlogController extends Controller
         $categoryName = Category::find($blogData->category_id)->name;
         $userData = User::find($blogData->author_id);
         $userSocialMedia = SocialMedia::where('user_id', $blogData->author_id)->get();
-      
+
 
         // Generate share links with the current domain
         $share = new Share();
 
         $link = $share
-        ->page(route('user.blog.show', $blogData->id), $blogData->title)
-        ->facebook()
-        ->twitter()
-        ->linkedin()
-        ->whatsapp()
-        ->getRawLinks();
+            ->page(route('user.blog.show', $blogData->id), $blogData->title)
+            ->facebook()
+            ->twitter()
+            ->linkedin()
+            ->whatsapp()
+            ->getRawLinks();
         // Fetch related posts by category, excluding the current post
         $relatedPosts = Blog::where('category_id', $blogData->category_id)
             ->where('id', '!=', $blogData->id)
@@ -112,6 +112,14 @@ class BlogController extends Controller
             ->cookie($blogKey, true, 60 * 24 * 365); // This cookie lasts one year
     }
 
+
+    public function category_wise_blog(String $slug)
+    {
+        $category_list = Category::all();
+        $category_data = Category::where('slug', $slug)->first();
+        $blog_articles = Blog::where('category_id', $category_data->id)->paginate(12);
+        return view('frontend.blog.category_blog', compact('blog_articles', 'category_data','category_list'));
+    }
 
     /**
      * Show the form for editing the specified resource.

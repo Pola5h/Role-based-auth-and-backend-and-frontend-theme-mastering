@@ -3,11 +3,12 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
+use App\Models\Tag;
+use App\Models\Blog;
 use App\Models\User;
 use App\Models\Category;
-use App\Models\Tag;
 
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -32,7 +33,7 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('admin123'), // Hash the password
                 'user_type' => '1',
                 'about' => 'This is admin',
-
+                'image' => 'admin.jpg',
                 'created_at' => now(),
             ],
             [
@@ -41,11 +42,11 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('user1234'), // Hash the password
                 'user_type' => '2',
                 'about' => 'This is user',
-
+                'image' => 'user.jpg',
                 'created_at' => now(),
             ],
         ];
-    
+
         User::insert($users);
         $categories = [
             [
@@ -155,9 +156,9 @@ class DatabaseSeeder extends Seeder
             ],
             // Add more categories as needed
         ];
-        
+
         Category::insert($categories);
-        
+
 
 
 
@@ -185,7 +186,6 @@ class DatabaseSeeder extends Seeder
         ];
         Tag::insert($tags);
 
-
-
+        Blog::factory(50)->create();
     }
 }

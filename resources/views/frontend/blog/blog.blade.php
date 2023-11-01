@@ -168,7 +168,6 @@
                                                         <p>${comment.content}</p>
                                                     </div>
                                                     <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
-                                    <a href="#" class="text-underline ">Reply</a>
                                 </div>
 
                             
@@ -182,11 +181,12 @@
                                     console.log(textStatus, errorThrown);
                                 }
                             });
-                        }, 1500); 
+                        }, 500); 
                     </script>
-                    
+
 
                 </div>
+                @auth
 
                 <form class="comment-form mb-5 gray-bg p-5" id="comment-form" method="POST"> @csrf
                     <!-- Add this line to include the CSRF token -->
@@ -203,6 +203,18 @@
                     <input class="btn btn-primary" type="submit" name="submit-contact" id="submit_contact"
                         action="/comment" value="Comment">
                 </form>
+                @else
+
+                <form class="comment-form mb-5 gray-bg p-5" id="comment-form" method="POST"> @csrf
+                    <!-- Add this line to include the CSRF token -->
+
+                    <h1 class="mb-4 text-center">Leave a comment</h1>
+                    <h4 class="mb-4 text-center">You need to login first</h4>
+
+
+
+                </form>
+                @endauth
 
             </div>
             <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -301,7 +313,8 @@
                                 <!-- Initial categories are loaded here -->
                                 @foreach($categoryData->take(5) as $category)
                                 <li class="align-items-center d-flex justify-content-between">
-                                    <a href="#">{{ $category->name }}</a>
+                                    <a href="{{ route('category.blog', ['slug' => $category->slug]) }}">{{
+                                        $category->name }}</a>
                                     <span>{{ $countBlog = App\Models\Blog::where('category_id', $category->id)->count();
                                         }}</span>
                                 </li>
@@ -408,7 +421,7 @@
                     // Append the loaded categories to the list
                     data.categories.forEach(function(category) {
                         var categoryItem = '<li class="align-items-center d-flex justify-content-between">' +
-                            '<a href="">' + category.name + '</a>' +
+                            '<a href="' + category.url + '">' + category.name + '</a>' +
                             '<span>' + category.count + '</span>' +
                             '</li>';
                         $('#category-list').append(categoryItem);
@@ -423,11 +436,12 @@
         });
     });
 });
+
 </script>
 
 {{-- comment --}}
 <script>
-$(document).ready(function() {
+    $(document).ready(function() {
     $('#comment-form').on('submit', function(e) {
         e.preventDefault();
         var comment = $('#comment').val();
