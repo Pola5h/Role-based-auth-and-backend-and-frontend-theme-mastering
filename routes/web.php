@@ -71,7 +71,7 @@ Route::get('/search', [\App\Http\Controllers\SearchController::class, 'search'])
 
 Route::resource('comment', \App\Http\Controllers\CommentController::class);
 
-Route::get('blog/{slug}', [\App\Http\Controllers\frontend\BlogController::class, 'category_wise_blog'])->name('category.blog');
+Route::get('category_wise_blog/{slug}', [\App\Http\Controllers\frontend\BlogController::class, 'category_wise_blog'])->name('category.blog');
 
 
 
